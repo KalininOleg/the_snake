@@ -45,8 +45,9 @@ class GameObject:
     def __init__(self) -> None:
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
-    """определяет как объект будет отрисовываться на экране"""
+    """Определяет как объект будет отрисовываться на экране"""
     def draw(self):
+        """Метод для отрисовки объекта"""
         pass
 
 
