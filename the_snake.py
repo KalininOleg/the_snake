@@ -41,6 +41,7 @@ clock = pygame.time.Clock()
 
 class GameObject:
     """Базовый класс"""
+
     def __init__(self) -> None:
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
@@ -63,6 +64,7 @@ class GameObject:
 
 class Apple(GameObject):
     """Класс отображает яблоко и обрабатывает действия"""
+
     def draw(self):
         """Выводит яблоко"""
         self.rect_creator(self.apple_color, self.position)
@@ -81,6 +83,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс отображает змейку и обрабатывает действия"""
+
     def __init__(self):
         """Инициализация атрибутов в классе Змейки"""
         super().__init__()
