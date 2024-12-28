@@ -41,29 +41,31 @@ clock = pygame.time.Clock()
 
 class GameObject:
     """Базовый класс"""
-
     def __init__(self) -> None:
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
         self.body_color = None
-    """Определяет как объект будет отрисовываться на экране"""
+        self.apple_color = APPLE_COLOR
+        self.snake_color = SNAKE_COLOR
+        self.positions = [self.position]
+        self.direction = RIGHT
+        self.next_direction = None
+
     def draw(self):
-        """Метод для отрисовки объекта"""
-        pass
+        """Метод отрисовки объекта"""
+        raise NotImplementedError(self.__class__.__name__ + ' does not work')
+
+    def rect_creator(self, body_color, position):
+        """Метод отрисовки прямоугольника"""
+        rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, body_color, rect)
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Apple(GameObject):
     """Класс отображает яблоко и обрабатывает действия"""
-
-    def __init__(self):
-        """Инициализация атрибутов в классе Яблока"""
-        super().__init__()
-        self.body_color = APPLE_COLOR
-
     def draw(self):
         """Выводит яблоко"""
-        rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, self.body_color, rect)
-        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+        self.rect_creator(self.apple_color, self.position)
 
     def randomize_position(self, snakes_body):
         """Определяет позицию яблока в случайном порядке"""
@@ -79,22 +81,15 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Класс отображает змейку и обрабатывает действия"""
-
     def __init__(self):
         """Инициализация атрибутов в классе Змейки"""
         super().__init__()
-        self.positions = [self.position]
-        self.direction = RIGHT
-        self.next_direction = None
-        self.body_color = SNAKE_COLOR
         self.reset()
 
     def draw(self):
         """Выводит змейку"""
         for position in self.positions:
-            rect = (pygame.Rect(position, (GRID_SIZE, GRID_SIZE)))
-            pygame.draw.rect(screen, self.body_color, rect)
-            pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+            self.rect_creator(self.snake_color, position)
 
     def update_direction(self):
         """обновляет направление движения змейки"""
