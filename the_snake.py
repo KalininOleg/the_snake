@@ -42,18 +42,13 @@ clock = pygame.time.Clock()
 class GameObject:
     """Базовый класс"""
 
-    def __init__(self) -> None:
-        self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
-        self.body_color = None
-        self.apple_color = APPLE_COLOR
-        self.snake_color = SNAKE_COLOR
-        self.positions = [self.position]
-        self.direction = RIGHT
-        self.next_direction = None
+    def __init__(self, position = None, body_color = None):
+        self.position = position
+        self.body_color = body_color
 
     def draw(self):
         """Метод отрисовки объекта"""
-        raise NotImplementedError(self.__class__.__name__ + ' does not work')
+        raise NotImplementedError(f"{self.__class__.__name__} does not work")
 
     def rect_creator(self, body_color, position):
         """Метод отрисовки прямоугольника"""
@@ -65,9 +60,20 @@ class GameObject:
 class Apple(GameObject):
     """Класс отображает яблоко и обрабатывает действия"""
 
+    def __init__(self):
+        """Инициализация в классе Яблоко"""
+        GameObject.__init__(
+            self,
+            position=(
+                randrange(0, SCREEN_WIDTH, GRID_SIZE),
+                randrange(0, SCREEN_HEIGHT, GRID_SIZE)
+            ),
+            body_color=APPLE_COLOR,
+        )
+
     def draw(self):
         """Выводит яблоко"""
-        self.rect_creator(self.apple_color, self.position)
+        self.rect_creator(self.body_color, self.position)
 
     def randomize_position(self, snakes_body):
         """Определяет позицию яблока в случайном порядке"""
@@ -86,13 +92,21 @@ class Snake(GameObject):
 
     def __init__(self):
         """Инициализация атрибутов в классе Змейки"""
-        super().__init__()
+        GameObject.__init__(
+            self,
+            position=(
+                GRID_WIDTH // 2 * GRID_SIZE,
+                GRID_HEIGHT // 2 * GRID_SIZE
+            ),
+            body_color=SNAKE_COLOR
+        )
+        self.next_direction = None
         self.reset()
 
     def draw(self):
         """Выводит змейку"""
         for position in self.positions:
-            self.rect_creator(self.snake_color, position)
+            self.rect_creator(self.body_color, position)
 
     def update_direction(self):
         """обновляет направление движения змейки"""
